@@ -1,3 +1,4 @@
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -16,6 +17,12 @@ namespace Notes.Identity
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentityServer()
+                .AddInMemoryApiResources(new List<ApiResource>())
+                .AddInMemoryIdentityResources(new List<IdentityResource>())
+                .AddInMemoryApiScopes(new List<ApiScope>())
+                .AddInMemoryClients(new List<Client>())
+                .AddDeveloperSigningCredential();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -27,6 +34,7 @@ namespace Notes.Identity
             }
 
             app.UseRouting();
+            app.UseIdentityServer();
 
             app.UseEndpoints(endpoints =>
             {
